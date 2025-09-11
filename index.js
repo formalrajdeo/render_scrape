@@ -51,8 +51,8 @@ async function scrapeGroupId(groupId, headers) {
     try {
         const noOfResults = 100;
         const url = `https://www.naukri.com/jobapi/v3/search?noOfResults=${noOfResults}&groupId=${groupId}&pageNo=1&searchType=groupidsearch`;
-        // const response = await axios.get(url, { headers });
-        const response = { data: { groupId } };
+        const response = await axios.get(url, { headers });
+        // const response = { data: { groupId } }; // for mocking
         const filePath = path.join(scrapedDir, `${groupId}.json`);
         fs.writeFileSync(filePath, JSON.stringify(response.data, null, 2));
         console.log(`✅ Saved ${filePath}`);
@@ -64,6 +64,9 @@ async function scrapeGroupId(groupId, headers) {
 }
 
 app.get('/scrape', async (req, res) => {
+    // Get fresh headers/cookies for this major group
+    const headers = await getNaukriCookiesAndHeaders();
+
     // Batch into 9 major groups (1000 groupIds each)
     const majorGroups = chunkArray(groupIds, 1000);
 
@@ -75,8 +78,6 @@ app.get('/scrape', async (req, res) => {
         const majorGroup = majorGroups[majorIndex];
         console.log(`\n➡️ Processing major group ${majorIndex + 1} / ${majorGroups.length}`);
 
-        // Get fresh headers/cookies for this major group
-        const headers = await getNaukriCookiesAndHeaders();
 
         // Now chunk major group into subgroups of 100 groupIds each
         const subGroups = chunkArray(majorGroup, 100);
