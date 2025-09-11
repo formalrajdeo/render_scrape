@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node index_getJobMetadataByGroupId.js",
     "postinstall": "npx puppeteer browsers install chrome"
   },
   "keywords": [],
