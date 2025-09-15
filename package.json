@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index_getJobdetailByJobId.js",
+    "start": "node index_gifDownloader.js",
     "postinstall": "npx puppeteer browsers install chrome"
   },
   "keywords": [],
